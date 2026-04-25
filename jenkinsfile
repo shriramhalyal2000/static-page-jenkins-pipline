@@ -1,0 +1,20 @@
+pipeline{
+    scm checkout
+    agent agent-1
+    stages{
+        stage("build"){
+            steps{
+                sh '''
+                docker build -t static-page:1.0.0 .
+                '''
+            }
+        }
+        stage("push"){
+            steps{
+                withCredentials{
+                    
+                }
+            }
+        }
+    }
+}

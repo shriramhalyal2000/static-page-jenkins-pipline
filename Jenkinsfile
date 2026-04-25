@@ -11,11 +11,11 @@ pipeline{
         }
         stage("push"){
             steps{
-                withCredentials[(usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USER', passwordVariable: 'PASS'))]{
+                withCredentials[(usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'dockerHubUser', passwordVariable: 'dockerHubPass'))]{
                     sh '''
-                    docker login -u | "${PASS}"
+                    docker login -u ${env.dockerHubUser} -p ${dockerHubPass}
                     docker tag static-page:1.0.0 "${USER}"/static-apge:1.0.0
-                    docker push "${USER}"/static-page:1.0.0
+                    docker push "${env.dockerHubUer}"/static-page:1.0.0
                     '''
                 }
             }

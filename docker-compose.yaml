@@ -1,6 +1,7 @@
 version: 3.6
 services:
 
-  image: shriram2105/static-page:latest
-  ports:
-    80:80
+  staticapp:
+    image: staticpage:1.0.0
+    ports:
+      - 80:80

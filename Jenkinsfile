@@ -1,0 +1,31 @@
+pipeline{
+    scm checkout
+    agent { label "agent-1"}
+    stages{
+        stage("build"){
+            steps{
+                sh '''
+                docker build -t static-page:1.0.0 .
+                '''
+            }
+        }
+        stage("push"){
+            steps{
+                withCredentials[(usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USER', passwordVariable: 'PASS'))]{
+                    sh '''
+                    docker login -u | "${PASS}"
+                    docker tag static-page:1.0.0 "${USER}"/static-apge:1.0.0
+                    docker push "${USER}"/static-page:1.0.0
+                    '''
+                }
+            }
+        }
+        stage("deploy"){
+            steps{
+                sh '''
+                docker compose up -d .
+                '''
+            }
+        }
+    }
+}
